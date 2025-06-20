@@ -17,13 +17,3 @@ Os dados serão fornecidos por meio de uma base de dados CSV, que contém os cam
 2 – Desafio
 
 A empresa enfrenta o desafio de melhorar suas margens de lucro e deseja identificar as categorias de produtos e os modos de pagamento que mais contribuem para isso. Além disso, eles querem entender quais subcategorias de produtos têm maior potencial de crescimento e quais produtos poderiam ser removidos do portfólio para otimizar as operações.
-
-Dados para Análise: Os dados fornecidos serão extraídos da base disponível no Kaggle (https://www.kaggle.com/datasets/samruddhi4040/online-sales-data?resource=download), com os seguintes campos:
-
-● ID do Pedido: Identificação única para cada pedido.
-● Quantia: Valor total da venda de cada pedido.
-● Lucro: Margem de lucro obtida em cada pedido.
-● Quantidade: Número de itens vendidos em cada pedido.
-● Categoria: Categoria principal dos produtos vendidos.
-● Subcategoria: Subcategoria mais específica dentro da categoria principal.
-● Modo de Pagamento: Forma de pagamento escolhida pelo cliente.
