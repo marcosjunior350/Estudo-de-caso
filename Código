@@ -1,0 +1,165 @@
+# Bibliotecas
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Configurações de estilo dos gráficos
+sns.set(style="whitegrid", palette="pastel")
+plt.rcParams["figure.figsize"] = (10, 6)
+
+file_path = "Dados gerais.xlsx"
+
+# Verificar as planilhas disponíveis
+excel_file = pd.ExcelFile(file_path)
+print("Planilhas disponíveis:", excel_file.sheet_names)
+
+df = pd.read_excel(file_path, sheet_name="Dados gerais")
+
+# Exibir as primeiras linhas do DataFrame
+print("Amostra dos dados:")
+display(df.head())
+
+# Padronizar os nomes das colunas
+df.columns = (
+    df.columns.str.strip()
+              .str.lower()
+              .str.replace(' ', '_')
+              .str.replace('ç', 'c')
+              .str.replace('á', 'a')
+              .str.replace('é', 'e')
+)
+
+# Verificar os tipos de dados
+print("\nTipos de dados:")
+print(df.dtypes)
+
+# Verificar valores ausentes
+print("\nValores ausentes por coluna:")
+print(df.isnull().sum())
+
+# Verificar se há duplicatas
+duplicatas = df.duplicated().sum()
+print(f"\nLinhas duplicadas: {duplicatas}")
+
+# Remover linhas com dados ausentes (decisão simplificada para análise descritiva)
+df_clean = df.dropna()
+
+# Verificar nova forma do DataFrame
+print(f"\nTotal de registros após limpeza: {df_clean.shape[0]} linhas")
+
+# Estatísticas descritivas
+print("Estatísticas descritivas gerais:")
+display(df_clean[['valor_de_venda', 'margem_de_lucro', 'quantidade']].describe())
+
+# Totais
+total_vendas = df_clean['valor_de_venda'].sum()
+total_lucro = df_clean['margem_de_lucro'].sum()
+total_quantidade = df_clean['quantidade'].sum()
+
+print(f"\nReceita total: R$ {total_vendas:,.2f}")
+print(f"Lucro total: R$ {total_lucro:,.2f}")
+print(f"Quantidade total de itens vendidos: {int(total_quantidade)}")
+
+# Receita total por categoria
+vendas_por_categoria = df_clean.groupby('categoria')['valor_de_venda'].sum().sort_values(ascending=False)
+
+# Lucro total por categoria
+lucro_por_categoria = df_clean.groupby('categoria')['margem_de_lucro'].sum().sort_values(ascending=False)
+
+# Quantidade por categoria
+quantidade_por_categoria = df_clean.groupby('categoria')['quantidade'].sum().sort_values(ascending=False)
+
+# Gráficos e Receita por categoria
+vendas_por_categoria.plot(kind='bar', title='Receita Total por Categoria', color='skyblue')
+plt.ylabel('Valor de Venda (R$)')
+plt.xlabel('Categoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Lucro por categoria
+lucro_por_categoria.plot(kind='bar', title='Lucro Total por Categoria', color='mediumseagreen')
+plt.ylabel('Lucro (R$)')
+plt.xlabel('Categoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Quantidade por categoria
+quantidade_por_categoria.plot(kind='bar', title='Quantidade Vendida por Categoria', color='salmon')
+plt.ylabel('Quantidade')
+plt.xlabel('Categoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Gráfico de dispersão entre lucro e valor de venda
+sns.scatterplot(data=df_clean, x='valor_de_venda', y='margem_de_lucro', hue='categoria', alpha=0.7)
+plt.title('Relação entre Valor de Venda e Lucro')
+plt.xlabel('Valor de Venda (R$)')
+plt.ylabel('Lucro (R$)')
+plt.legend(title='Categoria', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+# Receita total por subcategoria
+vendas_por_subcategoria = df_clean.groupby('sub-categoria')['valor_de_venda'].sum().sort_values(ascending=False)
+
+# Lucro total por subcategoria
+lucro_por_subcategoria = df_clean.groupby('sub-categoria')['margem_de_lucro'].sum().sort_values(ascending=False)
+
+# Quantidade total por subcategoria
+quantidade_por_subcategoria = df_clean.groupby('sub-categoria')['quantidade'].sum().sort_values(ascending=False)
+
+# Gráfico 1: Receita por subcategoria
+vendas_por_subcategoria.plot(kind='bar', title='Receita Total por Subcategoria', color='dodgerblue')
+plt.ylabel('Valor de Venda (R$)')
+plt.xlabel('Subcategoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Gráfico 2: Lucro por subcategoria
+lucro_por_subcategoria.plot(kind='bar', title='Lucro Total por Subcategoria', color='darkorange')
+plt.ylabel('Lucro (R$)')
+plt.xlabel('Subcategoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Gráfico 3: Quantidade vendida por subcategoria
+quantidade_por_subcategoria.plot(kind='bar', title='Quantidade Vendida por Subcategoria', color='mediumorchid')
+plt.ylabel('Quantidade')
+plt.xlabel('Subcategoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Agrupamentos por método de pagamento
+vendas_pagamento = df_clean.groupby('metodo_de_pagamento')['valor_de_venda'].sum().sort_values(ascending=False)
+lucro_pagamento = df_clean.groupby('metodo_de_pagamento')['margem_de_lucro'].sum().sort_values(ascending=False)
+quantidade_pagamento = df_clean.groupby('metodo_de_pagamento')['quantidade'].sum().sort_values(ascending=False)
+
+# Gráfico 1 – Receita por método de pagamento
+vendas_pagamento.plot(kind='bar', title='Receita por Método de Pagamento', color='royalblue')
+plt.ylabel('Valor de Venda (R$)')
+plt.xlabel('Método de Pagamento')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Gráfico 2 – Lucro por método de pagamento
+lucro_pagamento.plot(kind='bar', title='Lucro por Método de Pagamento', color='seagreen')
+plt.ylabel('Lucro (R$)')
+plt.xlabel('Método de Pagamento')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Gráfico 3 – Quantidade vendida por método de pagamento
+quantidade_pagamento.plot(kind='bar', title='Quantidade Vendida por Método de Pagamento', color='darkorange')
+plt.ylabel('Quantidade')
+plt.xlabel('Método de Pagamento')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
