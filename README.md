@@ -1,4 +1,4 @@
-# Estudo-de-caso
+# Estudo-de-caso (Data Science, Machine Learning e Data Mining - UniFecaf)
 
 1. Título do Estudo de Caso - Análise Descritiva de Vendas e Lucratividade - Loja Online
 
